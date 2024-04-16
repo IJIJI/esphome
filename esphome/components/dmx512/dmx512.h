@@ -71,7 +71,7 @@ class DMX512 : public Component {
 };
 
 class DMX512Output : public output::FloatOutput, public Component {
-public:
+ public:
   void set_universe(DMX512 *universe) { this->universe_ = universe; }
   void set_channel(uint16_t channel);
   void write_state(float state) override;
