@@ -50,7 +50,6 @@ void DMX512::set_channel_used(uint16_t channel) {
 }
 
 void DMX512::write_channel(uint16_t channel, uint8_t value) {
-  ESP_LOGD(TAG, "write_channel %d: %d", channel, value);
   this->device_values_[channel] = value;
   this->update_ = true;
 }
