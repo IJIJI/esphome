@@ -3,12 +3,16 @@ import esphome.config_validation as cv
 from esphome import pins
 from esphome.components import display, spi
 from esphome.const import (
-    CONF_ENABLE_PIN,
     CONF_ID,
+    CONF_ENABLE_PIN,
+    CONF_WIDTH,
+    CONF_BIT_DEPTH,
     CONF_LAMBDA,
     CONF_PAGES,
     CONF_BRIGHTNESS
 )
+CONF_DOUBLE_BUFFER = "double_buffer"
+
 CONF_COLOR_R1 = "R1 Color Pin"
 CONF_COLOR_G1 = "G1 Color Pin"
 CONF_COLOR_B1 = "B1 Color Pin"
@@ -34,8 +38,12 @@ CONFIG_SCHEMA = cv.All(
     display.FULL_DISPLAY_SCHEMA.extend(
         {
             cv.GenerateID(): cv.declare_id(HUB75),
-            cv.Required(CONF_BRIGHTNESS): pins.gpio_output_pin_schema,
             cv.Required(CONF_ENABLE_PIN): pins.gpio_output_pin_schema,
+            cv.Required(CONF_BRIGHTNESS): pins.gpio_output_pin_schema,
+            cv.Required(CONF_WIDTH): pins.gpio_output_pin_schema,
+            cv.Required(CONF_BIT_DEPTH): pins.gpio_output_pin_schema,
+            cv.Required(CONF_DOUBLE_BUFFER): pins.gpio_output_pin_schema,
+
             cv.Required(CONF_COLOR_R1): pins.gpio_output_pin_schema,
             cv.Required(CONF_COLOR_G1): pins.gpio_output_pin_schema,
             cv.Required(CONF_COLOR_B1): pins.gpio_output_pin_schema,
