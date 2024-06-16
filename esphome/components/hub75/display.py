@@ -27,12 +27,15 @@ CONF_ADDRESS_B = "addr_b_pin"
 CONF_ADDRESS_C = "addr_c_pin"
 CONF_ADDRESS_D = "addr_d_pin"
 
+
+
 # DEPENDENCIES = ["spi"]
 
 CODEOWNERS = ["@IJIJI"]
 
-HUB75_ns = cg.esphome_ns.namespace("hub75")
-HUB75 = HUB75_ns.class_(
+hub75_ns = cg.esphome_ns.namespace("hub75")
+
+HUB75 = hub75_ns.class_(
     "HUB75", cg.PollingComponent, display.DisplayBuffer
 )
 
