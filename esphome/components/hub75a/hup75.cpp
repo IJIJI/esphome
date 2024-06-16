@@ -98,6 +98,7 @@ void HUB75::begin() {
 }
 
 
+
 void HUB75::updateDisplay() {
 
   uint8_t i, tick, tock, *ptr;
