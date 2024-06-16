@@ -15,16 +15,16 @@ CONF_LATCH_PIN = "latch_pin"
 
 CONF_DOUBLE_BUFFER = "double_buffer"
 
-CONF_COLOR_R1 = "R1 Color Pin"
-CONF_COLOR_G1 = "G1 Color Pin"
-CONF_COLOR_B1 = "B1 Color Pin"
-CONF_COLOR_R2 = "R2 Color Pin"
-CONF_COLOR_G2 = "G2 Color Pin"
-CONF_COLOR_B2 = "B2 Color Pin"
-CONF_ADDRESS_A = "Address A Pin"
-CONF_ADDRESS_B = "Address B Pin"
-CONF_ADDRESS_C = "Address C Pin"
-CONF_ADDRESS_D = "Address D Pin"
+CONF_COLOR_R1 = "r1_pin"
+CONF_COLOR_G1 = "g1_pin"
+CONF_COLOR_B1 = "b1_pin"
+CONF_COLOR_R2 = "r2_pin"
+CONF_COLOR_G2 = "g2_pin"
+CONF_COLOR_B2 = "b2_pin"
+CONF_ADDRESS_A = "addr_a_pin"
+CONF_ADDRESS_B = "addr_b_pin"
+CONF_ADDRESS_C = "addr_c_pin"
+CONF_ADDRESS_D = "addr_d_pin"
 
 # DEPENDENCIES = ["spi"]
 
