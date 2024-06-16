@@ -6,7 +6,38 @@
 namespace esphome {
 namespace hub75 {
 
-static const char *const TAG = "pcd_8544";
+static const char *const TAG = "hub75";
+
+#ifndef _swap_int16_t
+#define _swap_int16_t(a, b)                                                    \
+  {                                                                            \
+    int16_t t = a;                                                             \
+    a = b;                                                                     \
+    b = t;                                                                     \
+  } ///< 16-bit var swap
+#endif
+
+// A full PORT register is required for the data lines, though only the
+// top 6 output bits are used.  For performance reasons, the port # cannot
+// be changed via library calls, only by changing constants in the library.
+// For similar reasons, the clock pin is only semi-configurable...it can
+// be specified as any pin within a specific PORT register stated below.
+
+
+// Support for ATSAMD21-based boards, done with PortType!
+
+#define nPlanes 4 ///< Bit depth per R,G,B (4 = (2^4)^3 = 4096 colors)
+
+// The fact that the display driver interrupt stuff is tied to the
+// singular Timer1 doesn't really take well to object orientation with
+// multiple RGBmatrixPanel instances.  The solution at present is to
+// allow instances, but only one is active at any given time, via its
+// begin() method.  The implementation is still incomplete in parts;
+// the prior active panel really should be gracefully disabled, and a
+// stop() method should perhaps be added...assuming multiple instances
+// are even an actual need.
+static HUB75 *activePanel = NULL; ///< Active RGB panel object
+
 
 // Constructor for 32 high matrix
 HUB75::HUB75(uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint8_t clk,
@@ -26,20 +57,20 @@ void HUB75::start() {
   activePanel = this;                  // For interrupt hander
 
   // Enable all comm & address pins as outputs, set default states:
-  pinMode(_clk, OUTPUT);
-  digitalWrite(_clk, LOW); // Low
-  pinMode(_lat, OUTPUT);
+  this->_clk->setup();
+  this->_clk->digital_write(false);
+  this->_lat->setup();
   *latport &= ~latmask; // Low
-  pinMode(_oe, OUTPUT);
+  this->_oe->setup();
   *oeport |= oemask; // High (disable output)
-  pinMode(_a, OUTPUT);
+  this->_a->setup();
   *addraport &= ~addramask; // Low
-  pinMode(_b, OUTPUT);
+  this->_b->setup();
   *addrbport &= ~addrbmask; // Low
-  pinMode(_c, OUTPUT);
+  this->_c->setup();
   *addrcport &= ~addrcmask; // Low
   if (nRows > 8) {
-    pinMode(_d, OUTPUT);
+    this->_d->setup();
     *addrdport &= ~addrdmask; // Low
   }
 
@@ -55,7 +86,7 @@ void HUB75::start() {
   PortType rgbmask[6];
   clkmask = rgbclkmask = digitalPinToBitMask(_clk);
   for (uint8_t i = 0; i < 6; i++) {
-    pinMode(rgbpins[i], OUTPUT);
+    this->rgbpins[i]->setup();
     rgbmask[i] = digitalPinToBitMask(rgbpins[i]); // Pin bit mask
     rgbclkmask |= rgbmask[i];                     // Add to RGB+CLK bit mask
   }
@@ -255,27 +286,6 @@ void HUB75::fill(Color color) {
   memset(matrixbuff[backindex], c, WIDTH * nRows * 3);
 }
 
-void HOT HUB75::display() {
-  // uint8_t col, maxcol, p;
-
-  // for (p = 0; p < 6; p++) {
-  //   this->command(this->PCD8544_SETYADDR | p);
-
-  //   // start at the beginning of the row
-  //   col = 0;
-  //   maxcol = this->get_width_internal() - 1;
-
-  //   this->command(this->PCD8544_SETXADDR | col);
-
-  //   this->start_data_();
-  //   for (; col <= maxcol; col++) {
-  //     this->write_byte(this->buffer_[(this->get_width_internal() * p) + col]);
-  //   }
-  //   this->end_data_();
-  // }
-
-  // this->command(this->PCD8544_SETYADDR);
-}
 
 void HOT HUB75::draw_absolute_pixel_internal(int x, int y, Color color) {
 
