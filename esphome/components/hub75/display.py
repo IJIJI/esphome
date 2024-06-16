@@ -95,7 +95,7 @@ async def to_code(config):
 
     dual_buffer = config[CONF_DOUBLE_BUFFER]
 
-    var = cg.new_Pvariable(config[CONF_ID])
+    # var = cg.new_Pvariable(config[CONF_ID])
     var = cg.new_Pvariable(
         config[CONF_ID],
         addr_a,
