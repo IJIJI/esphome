@@ -35,24 +35,23 @@ class HUB75 : public display::DisplayBuffer{
   /*!
     @brief  Start RGB matrix. Initializes timers and interrupts.
   */
-  void begin() override {
-    this->setup_pins_();
-    this->init();
-  }
+  void begin() override;
 
   /*!
     @brief  Set the brightness of the display.
     @param  brightness Brightness level, from 0 (off) to 255 (max brightness).
   */
-  void set_brightness(uint8_t brightness) { this->brightness_ = brightness; }
+  void set_brightness(uint8_t brightness) { 
+    this->brightness_ = brightness; 
+    this->update();
+  }
 
   float get_setup_priority() const override { return setup_priority::PROCESSOR; }
 
+  void update() override { this->updateDisplay();};
 
   void dump_config() override;
-  void HOT display();
 
-  void update() override;
 
   void fill(Color color) override;
 
@@ -72,10 +71,9 @@ class HUB75 : public display::DisplayBuffer{
   display::DisplayType get_display_type() override { return display::DisplayType::DISPLAY_TYPE_BINARY; }
 
  protected:
+  IRAM_ATTR void updateDisplay();
+  
   void draw_absolute_pixel_internal(int x, int y, Color color) override;
-
-  void setup_pins_();
-  void init();
 
   size_t get_buffer_length_();
 
@@ -122,6 +120,8 @@ class HUB75 : public display::DisplayBuffer{
               uint8_t lat, uint8_t oe, boolean dbuf, uint8_t width,
               uint8_t *rgbpins
     );
+
+    RAM_ATTR void IRQ_HANDLER(void *arg);
 
     uint8_t _clk;       ///< RGB clock pin number
     uint8_t _lat;       ///< RGB latch pin number
