@@ -10,6 +10,7 @@ from esphome.const import (
     CONF_CLOCK_PIN,
     CONF_ENABLE_PIN,
     CONF_BRIGHTNESS,
+    CONF_ROTATION,
 )
 CONF_LATCH_PIN = "latch_pin"
 
