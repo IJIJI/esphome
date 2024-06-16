@@ -35,7 +35,7 @@ CODEOWNERS = ["@IJIJI"]
 
 hub75_ns = cg.esphome_ns.namespace("hub75")
 
-HUB75_DISP = hub75_ns.class_(
+HUB75 = hub75_ns.class_(
     "HUB75", cg.PollingComponent, display.DisplayBuffer
 )
 
@@ -43,7 +43,7 @@ HUB75_DISP = hub75_ns.class_(
 CONFIG_SCHEMA = cv.All(
     display.FULL_DISPLAY_SCHEMA.extend(
         {
-            cv.GenerateID(): cv.declare_id(HUB75_DISP),
+            cv.GenerateID(): cv.declare_id(HUB75),
             cv.Required(CONF_ENABLE_PIN): pins.gpio_output_pin_schema,
             cv.Required(CONF_CLOCK_PIN): pins.gpio_output_pin_schema,
             cv.Required(CONF_LATCH_PIN): pins.gpio_output_pin_schema,
