@@ -11,16 +11,16 @@ static const char *const TAG = "pcd_8544";
 // Constructor for 32 high matrix
 HUB75::HUB75(uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint8_t clk,
                 uint8_t lat, uint8_t oe, uint8_t width = 64,
-                uint8_t *pinlist = NULL, boolean dbuf = false){
+                uint8_t *pinlist = NULL, bool dbuf = false){
 
   init(16, a, b, c, clk, lat, oe, dbuf, width,
        pinlist
   );
 }
 
-IRAM_ATTR void IRQ_HANDLER(void *);
+DRAM_ATTR void IRQ_HANDLER(void *);
 
-void HUB75::begin() {
+void HUB75::start() {
   backindex = 0;                       // Back buffer
   buffptr = matrixbuff[1 - backindex]; // -> front buffer
   activePanel = this;                  // For interrupt hander
@@ -354,7 +354,7 @@ void HOT HUB75::draw_absolute_pixel_internal(int x, int y, Color color) {
 
 // -------------------- Interrupt handler stuff --------------------
 
-IRAM_ATTR void IRQ_HANDLER(void *arg) {
+DRAM_ATTR void IRQ_HANDLER(void *arg) {
   int timer_idx = (int)arg;
   /* Retrieve the interrupt status and the counter value
            from the timer that reported the interrupt */
@@ -373,7 +373,7 @@ IRAM_ATTR void IRQ_HANDLER(void *arg) {
 
 
 void HUB75::init(uint8_t rows, uint8_t a, uint8_t b, uint8_t c,
-                          uint8_t clk, uint8_t lat, uint8_t oe, boolean dbuf,
+                          uint8_t clk, uint8_t lat, uint8_t oe, bool dbuf,
                           uint8_t width,
                           uint8_t *pinlist
 ) {

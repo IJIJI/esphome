@@ -110,7 +110,7 @@ async def to_code(config):
         dual_buffer,
     )
 
-    cg.add(var.begin())
+    cg.add(var.start())
 
     await display.register_display(var, config)
     # await spi.register_spi_device(var, config)

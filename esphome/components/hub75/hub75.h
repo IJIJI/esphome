@@ -29,13 +29,13 @@ class HUB75 : public display::DisplayBuffer{
   */
   HUB75(uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint8_t clk,
                 uint8_t lat, uint8_t oe, uint8_t width = 64,
-                uint8_t *pinlist = NULL, boolean dbuf = false
+                uint8_t *pinlist = NULL, bool dbuf = false
   );
 
   /*!
     @brief  Start RGB matrix. Initializes timers and interrupts.
   */
-  void begin() override;
+  void start();
 
   /*!
     @brief  Set the brightness of the display.
@@ -71,7 +71,7 @@ class HUB75 : public display::DisplayBuffer{
   display::DisplayType get_display_type() override { return display::DisplayType::DISPLAY_TYPE_BINARY; }
 
  protected:
-  IRAM_ATTR void updateDisplay();
+  DRAM_ATTR void updateDisplay();
   
   void draw_absolute_pixel_internal(int x, int y, Color color) override;
 
@@ -88,36 +88,16 @@ class HUB75 : public display::DisplayBuffer{
   uint8_t brightness_;
   uint8_t width_;
 
-  // TODO USE DEAFULT SPI 
-  GPIOPin *clock_pin_;
-  GPIOPin *latch_pin_;
-  GPIOPin *oe_pin_;
-  
-  // TODO SUPPORT HIGHER RES SCREENS
-  // GPIOPin *address_pins_[4];
-  // GPIOPin *rgb_pins_[6];
-
-  GPIOPin *address_a_pin_;
-  GPIOPin *address_b_pin_;
-  GPIOPin *address_c_pin_;
-  GPIOPin *address_d_pin_;
-
-  GPIOPin *rgb_r1_pin_;
-  GPIOPin *rgb_g1_pin_;
-  GPIOPin *rgb_b1_pin_;
-  GPIOPin *rgb_r2_pin_;
-  GPIOPin *rgb_g2_pin_;
-  GPIOPin *rgb_b2_pin_;
 
   private:
     uint8_t *matrixbuff[2];     ///< Buffer pointers for double-buffering
     uint8_t nRows;              ///< Number of rows (derived from A/B/C/D pins)
     volatile uint8_t backindex; ///< Index (0-1) of back buffer
-    volatile boolean swapflag;  ///< if true, swap on next vsync
+    volatile bool swapflag;  ///< if true, swap on next vsync
 
     // Init/alloc code common to both constructors:
     void init(uint8_t rows, uint8_t a, uint8_t b, uint8_t c, uint8_t clk,
-              uint8_t lat, uint8_t oe, boolean dbuf, uint8_t width,
+              uint8_t lat, uint8_t oe, bool dbuf, uint8_t width,
               uint8_t *rgbpins
     );
 
