@@ -29,7 +29,7 @@ class HUB75 : public display::DisplayBuffer{
   */
   HUB75(uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint8_t clk,
                 uint8_t lat, uint8_t oe, uint8_t width = 64,
-                uint8_t *pinlist = NULL, bool dbuf = false
+                bool dbuf = false, uint8_t *pinlist = NULL
   );
 
   /*!
@@ -101,7 +101,7 @@ class HUB75 : public display::DisplayBuffer{
               uint8_t *rgbpins
     );
 
-    RAM_ATTR void IRQ_HANDLER(void *arg);
+    IRAM_ATTR void IRQ_HANDLER(void *arg);
 
     uint8_t _clk;       ///< RGB clock pin number
     uint8_t _lat;       ///< RGB latch pin number
