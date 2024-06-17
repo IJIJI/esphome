@@ -42,3 +42,5 @@ def to_code(config):
     dmx = yield cg.get_variable(config[CONF_UNIVERSE])
     cg.add(var.set_universe(dmx))
     cg.add(var.set_channel(config[CONF_CHANNEL]))
+
+# TODO REFRACTOR TO OUTPUT WITH INIT
